@@ -1,5 +1,5 @@
 import { Contract } from 'ethers';
-import ERC20Guild_ABI from '../../../contracts/ERC20Guild.json';
+import BaseERC20GuildContract from '../../../contracts/BaseERC20Guild.json';
 import { ERC20Guild } from '../../../types/contracts/ERC20Guild';
 import ERC20_ABI from '../../../contracts/ERC20.json';
 import { ERC20 } from '../../../types/contracts/ERC20';
@@ -20,8 +20,8 @@ export default function useContract<T extends Contract>(
     if (!provider || !contractId || !abi) return null;
     try {
       const contract = getContract({
-        addressOrName: contractId,
-        contractInterface: abi,
+        address: contractId,
+        abi: abi,
         signerOrProvider: withSignerIfPossible && isSuccess ? signer : provider,
       });
 
@@ -47,7 +47,7 @@ export function useERC20Guild(
 ) {
   return useContract<ERC20Guild>(
     contractId,
-    ERC20Guild_ABI.abi,
+    BaseERC20GuildContract.abi,
     chainId,
     withSignerIfPossible
   );

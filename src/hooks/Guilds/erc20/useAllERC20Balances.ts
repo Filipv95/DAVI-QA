@@ -13,7 +13,7 @@ export type TokenWithBalance = TokenInfoWithType & {
 };
 
 export const useAllERC20Balances = (
-  walletAddress: string,
+  walletAddress: `0x${string}`,
   includeNativeToken?: boolean
 ) => {
   const { chain } = useNetwork();
@@ -27,18 +27,21 @@ export const useAllERC20Balances = (
   const { data: erc20Balances, ...rest } = useContractReads({
     enabled: erc20Tokens?.length > 0 && !!walletAddress,
     contracts: erc20Tokens.map(token => ({
-      addressOrName: token.address,
-      contractInterface: ERC20.abi,
+      address: token.address,
+      abi: ERC20.abi,
       functionName: 'balanceOf',
       args: [walletAddress],
     })),
   });
+
   const erc20TokensWithBalance: TokenWithBalance[] = useMemo(() => {
     if (!erc20Balances) return null;
 
     return erc20Tokens.map((token, index) => ({
       ...token,
-      balance: BigNumber.from(erc20Balances[index]),
+      balance: erc20Balances[index]
+        ? BigNumber.from(erc20Balances[index])
+        : null,
     }));
   }, [erc20Balances, erc20Tokens]);
 
@@ -63,7 +66,7 @@ export const useAllERC20Balances = (
     if (!erc20TokensWithBalance) return tokens || undefined;
 
     const tokensWithBalances = nativeTokenWithBalance
-      ? [...erc20TokensWithBalance, nativeTokenWithBalance]
+      ? [nativeTokenWithBalance, ...erc20TokensWithBalance]
       : erc20TokensWithBalance;
 
     return tokensWithBalances.sort((a, b) => {

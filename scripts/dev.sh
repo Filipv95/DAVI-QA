@@ -21,8 +21,8 @@ hardhat_running() {
 start-hardhat_node() {
 
   yarn hardhat compile
-  
-  npx hardhat node > /dev/null &
+
+  npx hardhat node --hostname 0.0.0.0 > /dev/null &
 
   hardhat_pid=$!
 
@@ -37,7 +37,7 @@ start-hardhat_node() {
 
 if hardhat_running; then
   echo "Killing existent hardhat"
-  kill $(lsof -t -i:8545) 
+  kill $(lsof -t -i:8545)
 fi
 
 echo "Starting our own hardhat node instance"
@@ -66,6 +66,7 @@ echo "${contents}" > tsconfig.json
 # Run dapp with localhost contracts
 export REACT_APP_GIT_SHA=$(echo $(git rev-parse  HEAD) | cut -c1-9)
 export SKIP_PREFLIGHT_CHECK=true
+export REACT_APP_VERSION=$npm_package_version
 
 if [[ $* == *--no-browser* ]]; then
     echo "Setting BROWSER=none. No browser window will pop up"

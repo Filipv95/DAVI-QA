@@ -16,14 +16,14 @@ const NetworkButton = () => {
   };
 
   function getNetworkStatus() {
-    if (isConnected && chain.unsupported) {
+    if (isConnected && chain?.unsupported) {
       return (
         <Button onClick={toggleNetworkModal}>{t('unsupportedNetwork')}</Button>
       );
     } else if (isConnected) {
       return (
         <IconButton
-          data-testid="changeNetworkBtn"
+          data-testid="change-network-btn"
           onClick={toggleNetworkModal}
           iconLeft
         >

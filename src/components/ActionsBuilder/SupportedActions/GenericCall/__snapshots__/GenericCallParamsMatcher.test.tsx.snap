@@ -2,48 +2,142 @@
 
 exports[`GenericCallParamsMatcher Should match snapshot for all component types 1`] = `
 .c1 {
+  margin-right: 0.5rem;
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c2 {
   height: 1.6rem;
   width: 1.6rem;
 }
 
-.c2 {
+.c3 {
   border-radius: 50%;
   height: 16px;
   width: 16px;
 }
 
+.c5 {
+  box-sizing: 'border-box';
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+}
+
 .c0 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
+  display: Flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: left;
+  -webkit-justify-content: left;
+  -ms-flex-pack: left;
+  justify-content: left;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 50%;
-  line-height: 0;
+  text-align: center;
+  border-radius: 10px;
+  margin: 0;
+  padding: 0;
+}
+
+.c4 {
+  color: #A1A6B0;
+  margin-right: 0.5rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  overflow-wrap: break-word;
+}
+
+.c4:hover {
+  cursor: pointer;
+  color: #fff;
+}
+
+.c6 {
+  margin-right: 0.5rem;
+  overflow-wrap: break-word;
 }
 
 <div>
    
-  <span
+  <div
     class="c0"
+    data-testid="block-explorer-container"
+    direction="row"
   >
-    <img
-      alt="Avatar"
-      class="c1 c2"
-      data-testid="avatar"
-      size="16"
-      src="test"
-    />
-  </span>
-   
-  0x3f94...4351
+    <span
+      class="c1"
+    >
+      <img
+        alt="Avatar"
+        class="c2 c3"
+        data-testid="avatar"
+        size="16"
+        src="test"
+      />
+    </span>
+    <a
+      class="c4"
+      rel="noopener"
+      target="_blank"
+    >
+      <div
+        class="c5 c6"
+      >
+        test.eth
+      </div>
+      <svg
+        fill="none"
+        height="1em"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        viewBox="0 0 24 24"
+        width="1em"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
+        />
+        <polyline
+          points="15 3 21 3 21 9"
+        />
+        <line
+          x1="10"
+          x2="21"
+          y1="14"
+          y2="3"
+        />
+      </svg>
+    </a>
+  </div>
    
 </div>
 `;
@@ -67,7 +161,7 @@ exports[`GenericCallParamsMatcher Should match snapshot for all component types 
 exports[`GenericCallParamsMatcher Should match snapshot for all component types 4`] = `
 <div>
    
-  2022-05-29
+  Sunday, May 29, 2022 6:17 PM UTC
    
 </div>
 `;
@@ -114,51 +208,146 @@ exports[`GenericCallParamsMatcher Should match snapshot for all component types 
 
 exports[`GenericCallParamsMatcher replaces all component types correctly 1`] = `
 .c1 {
+  margin-right: 0.5rem;
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c2 {
   height: 1.6rem;
   width: 1.6rem;
 }
 
-.c2 {
+.c3 {
   border-radius: 50%;
   height: 16px;
   width: 16px;
 }
 
+.c5 {
+  box-sizing: 'border-box';
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+}
+
 .c0 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
+  display: Flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: left;
+  -webkit-justify-content: left;
+  -ms-flex-pack: left;
+  justify-content: left;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 50%;
-  line-height: 0;
+  text-align: center;
+  border-radius: 10px;
+  margin: 0;
+  padding: 0;
+}
+
+.c4 {
+  color: #A1A6B0;
+  margin-right: 0.5rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  overflow-wrap: break-word;
+}
+
+.c4:hover {
+  cursor: pointer;
+  color: #fff;
+}
+
+.c6 {
+  margin-right: 0.5rem;
+  overflow-wrap: break-word;
 }
 
 <div>
    
   <span
     matchedparam="addressParam"
+    style="display: inline-block;"
   >
-    <span
+    <div
       class="c0"
+      data-testid="block-explorer-container"
+      direction="row"
     >
-      <img
-        alt="Avatar"
-        class="c1 c2"
-        data-testid="avatar"
-        size="16"
-        src="test"
-      />
-    </span>
-     
-    0x3f94...4351
+      <span
+        class="c1"
+      >
+        <img
+          alt="Avatar"
+          class="c2 c3"
+          data-testid="avatar"
+          size="16"
+          src="test"
+        />
+      </span>
+      <a
+        class="c4"
+        rel="noopener"
+        target="_blank"
+      >
+        <div
+          class="c5 c6"
+        >
+          test.eth
+        </div>
+        <svg
+          fill="none"
+          height="1em"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="1em"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
+          />
+          <polyline
+            points="15 3 21 3 21 9"
+          />
+          <line
+            x1="10"
+            x2="21"
+            y1="14"
+            y2="3"
+          />
+        </svg>
+      </a>
+    </div>
   </span>
    
 </div>
@@ -169,6 +358,7 @@ exports[`GenericCallParamsMatcher replaces all component types correctly 2`] = `
    
   <span
     matchedparam="integerParam"
+    style="display: inline-block;"
   >
     1000000000000000000
   </span>
@@ -181,6 +371,7 @@ exports[`GenericCallParamsMatcher replaces all component types correctly 3`] = `
    
   <span
     matchedparam="decimalParam"
+    style="display: inline-block;"
   >
     1
   </span>
@@ -193,8 +384,9 @@ exports[`GenericCallParamsMatcher replaces all component types correctly 4`] = `
    
   <span
     matchedparam="dateParam"
+    style="display: inline-block;"
   >
-    2022-05-29
+    Sunday, May 29, 2022 6:17 PM UTC
   </span>
    
 </div>
@@ -205,6 +397,7 @@ exports[`GenericCallParamsMatcher replaces all component types correctly 5`] = `
    
   <span
     matchedparam="timeParam"
+    style="display: inline-block;"
   >
     52 years
   </span>
@@ -217,6 +410,7 @@ exports[`GenericCallParamsMatcher replaces all component types correctly 6`] = `
    
   <span
     matchedparam="booleanParam"
+    style="display: inline-block;"
   >
     false
   </span>
@@ -229,6 +423,7 @@ exports[`GenericCallParamsMatcher replaces all component types correctly 7`] = `
    
   <span
     matchedparam="tokenAmountParam"
+    style="display: inline-block;"
   >
     1
   </span>
@@ -241,6 +436,7 @@ exports[`GenericCallParamsMatcher replaces all component types correctly 8`] = `
    
   <span
     matchedparam="contentHashParam"
+    style="display: inline-block;"
   >
     QmXk294ZQebU6J7yYpAhBqBPaMquCKxGmGoNHLBpvUJ9on
   </span>
@@ -253,6 +449,7 @@ exports[`GenericCallParamsMatcher replaces all component types correctly 9`] = `
    
   <span
     matchedparam="otherParam"
+    style="display: inline-block;"
   >
     Test String
   </span>

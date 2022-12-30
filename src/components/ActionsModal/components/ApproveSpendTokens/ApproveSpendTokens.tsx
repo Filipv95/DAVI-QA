@@ -16,16 +16,18 @@ import {
   SectionWrapper,
   Wrapper,
 } from '../../ActionsModal.styled';
+import { Spacer } from './ApproveSpendTokens.styled';
+import { useNetwork } from 'wagmi';
 import {
-  ControlRow,
   Control,
   ControlLabel,
-  Spacer,
-} from './ApproveSpendTokens.styled';
-import { useNetwork } from 'wagmi';
+  ControlRow,
+} from 'components/primitives/Forms/Control';
+import { preventEmptyString } from 'utils';
+import { useTypedParams } from 'Modules/Guilds/Hooks/useTypedParams';
 
 export interface TokenSpendApproval {
-  amount?: BigNumber;
+  amount?: BigNumber | string;
   token?: string;
 }
 
@@ -41,6 +43,7 @@ const ApproveSpendTokens: React.FC<ApproveSpendTokensProps> = ({
   const { t } = useTranslation();
   const { chain } = useNetwork();
 
+  const { guildId } = useTypedParams();
   const [isTokenPickerOpen, setIsTokenPickerOpen] = useState(false);
   const [amount, setAmount] = useState<BigNumber>(null);
   const [token, setToken] = useState<string>(null);
@@ -56,7 +59,7 @@ const ApproveSpendTokens: React.FC<ApproveSpendTokensProps> = ({
 
   useEffect(() => {
     if (defaultValue) {
-      setAmount(defaultValue.amount);
+      setAmount(preventEmptyString(defaultValue.amount));
       setToken(defaultValue.token);
     }
   }, [defaultValue]);
@@ -111,6 +114,7 @@ const ApproveSpendTokens: React.FC<ApproveSpendTokensProps> = ({
         </ControlRow>
 
         <TokenPicker
+          walletAddress={guildId}
           isOpen={isTokenPickerOpen}
           onClose={() => setIsTokenPickerOpen(false)}
           onSelect={token => {

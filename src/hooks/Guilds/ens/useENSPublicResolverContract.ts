@@ -1,9 +1,6 @@
 import { useContractRead } from 'wagmi';
 import ensPublicResolver from 'contracts/ENSPublicResolver.json';
-import {
-  convertToIpfsHash,
-  convertToNameHash,
-} from 'components/ActionsBuilder/SupportedActions/UpdateENSContent/utils';
+import { convertToIpfsHash, convertToNameHash } from 'utils/ipfs';
 import { isAvailableOnENS } from './utils';
 import useENSResolver from './useENSResolver';
 import { MAINNET_ID } from 'utils';
@@ -15,38 +12,38 @@ import { MAINNET_ID } from 'utils';
 export function useENSAvatarUri(ensName: string, chainId?: number) {
   const supportedChainId = isAvailableOnENS(chainId) ? chainId : MAINNET_ID;
   const { resolver } = useENSResolver(ensName, supportedChainId);
-  const { data, isError, isLoading } = useContractRead({
-    addressOrName: resolver?.address,
-    contractInterface: ensPublicResolver.abi,
+  const { nameHash, error } = convertToNameHash(ensName);
+  const { data, ...rest } = useContractRead({
+    enabled: !error,
+    address: resolver?.address,
+    abi: ensPublicResolver.abi,
     functionName: 'text',
-    args: [convertToNameHash(ensName), 'avatar'],
+    args: [nameHash, 'avatar'],
     chainId: supportedChainId,
   });
   return {
     avatarUri: data?.toString(),
-    isError,
-    isLoading,
+    ...rest,
   };
 }
 
 export function useENSContentHash(ensName: string, chainId?: number) {
   const supportedChainId = isAvailableOnENS(chainId) ? chainId : MAINNET_ID;
-  const { resolver, isError, isLoading } = useENSResolver(
-    ensName,
-    supportedChainId
-  );
+  const { resolver, ...rest } = useENSResolver(ensName, supportedChainId);
+  const { nameHash, error } = convertToNameHash(ensName);
   const { data } = useContractRead({
-    addressOrName: resolver?.address,
-    contractInterface: ensPublicResolver.abi,
+    enabled: !error,
+    address: resolver?.address,
+    chainId: supportedChainId,
+    abi: ensPublicResolver.abi,
     functionName: 'contenthash',
-    args: convertToNameHash(ensName),
+    args: [nameHash],
     select(data) {
       return convertToIpfsHash(data.toString());
     },
   });
   return {
     ipfsHash: data?.toString(),
-    isLoading,
-    isError,
+    ...rest,
   };
 }

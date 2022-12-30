@@ -1,4 +1,3 @@
-import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useNetwork } from 'wagmi';
 import { NetworkButton } from '../NetworkButton';
@@ -8,22 +7,22 @@ import {
   HeaderContainer,
   MenuItems,
   ClickableHeading,
+  TextLogo,
 } from './Header.styled';
 
 const Header = () => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
   const { chain } = useNetwork();
 
   return (
     <HeaderWrapper as="header">
       <HeaderContainer>
         <ClickableHeading
-          data-testid="projectName"
+          data-testid="project-name"
           onClick={() => navigate(`/${chain.network}`)}
           size={2}
         >
-          <strong>{t('projectDavi.projectDavi')}</strong>
+          <TextLogo />
         </ClickableHeading>
         <MenuItems>
           <NetworkButton />

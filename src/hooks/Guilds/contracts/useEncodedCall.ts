@@ -1,6 +1,13 @@
-import { Call, DecodedCall, Option } from 'components/ActionsBuilder/types';
+import {
+  Call,
+  DecodedCall,
+  Option,
+  SupportedAction,
+} from 'components/ActionsBuilder/types';
+import { getPermissionArgs } from 'components/ActionsBuilder/utils';
 import ERC20 from 'contracts/ERC20.json';
 import { utils, BigNumber } from 'ethers';
+import { preventEmptyString } from 'utils';
 
 export const encodeCall = (
   decodedCall: DecodedCall,
@@ -28,10 +35,15 @@ export const bulkEncodeCallsFromOptions = (options: Option[]): Option[] => {
     const { decodedActions } = option;
     const encodedCalls: Call[] = decodedActions?.reduce(
       (acc, decodedAction) => {
+        const data =
+          decodedAction.decodedCall.callType === SupportedAction.RAW_TRANSACTION
+            ? decodedAction.decodedCall.optionalProps.data
+            : encodeCall(decodedAction.decodedCall, decodedAction.contract);
+
         const actionCall = {
           from: decodedAction.decodedCall.from,
           to: decodedAction.decodedCall.to,
-          data: encodeCall(decodedAction.decodedCall, decodedAction.contract),
+          data,
           value: decodedAction.decodedCall.value,
         };
         if (!!decodedAction.approval) {
@@ -40,7 +52,7 @@ export const bulkEncodeCallsFromOptions = (options: Option[]): Option[] => {
             to: decodedAction.approval?.token, // Token address
             data: encodeApprovalCall(
               decodedAction.decodedCall.to, // Spender: Contract we are doing the actual spending call to
-              decodedAction.approval?.amount // Value: Amount of tokens to approve
+              preventEmptyString(decodedAction.approval?.amount) // Value: Amount of tokens to approve
             ),
             value: BigNumber.from('0'), // No native tokens to send on approval call
           };
@@ -53,6 +65,7 @@ export const bulkEncodeCallsFromOptions = (options: Option[]): Option[] => {
     return {
       ...option,
       actions: encodedCalls,
+      permissions: getPermissionArgs(decodedActions),
     };
   });
 };

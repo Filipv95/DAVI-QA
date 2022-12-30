@@ -4,9 +4,10 @@ import {
   DecodedCall,
   SupportedAction,
   ApproveSendTokens,
-} from '../types';
+} from 'components/ActionsBuilder/types';
 import ENSPublicResolver from 'contracts/ENSPublicResolver.json';
 import ERC20 from 'contracts/ERC20.json';
+import BaseERC20Guild from 'contracts/BaseERC20Guild.json';
 import ERC20SnapshotRep from 'contracts/ERC20SnapshotRep.json';
 import PermissionRegistry from 'contracts/PermissionRegistry.json';
 import ERC20TransferEditor from './ERC20Transfer/ERC20TransferEditor';
@@ -19,7 +20,12 @@ import SetPermissionsInfoLine from './SetPermissions/SetPermissionsInfoLine';
 import UpdateENSContentEditor from './UpdateENSContent/UpdateENSContentEditor';
 import UpdateENSContentSummary from './UpdateENSContent/UpdateENSContentSummary';
 import UpdateENSContentInfoLine from './UpdateENSContent/UpdateENSContentInfoLine';
+import SetGuildConfigInfoLine from './SetGuildConfig/SetGuildConfigInfoLine';
+import SetGuildConfigEditor from './SetGuildConfig/SetGuildConfigEditor';
 import Summary from './common/Summary';
+import RawTransactionEditor from './RawTransaction/RawTransactionEditor';
+import RawTransactionInfoLine from './RawTransaction/RawTransactionInfoLine';
+
 export interface SupportedActionMetadata {
   title: string;
 }
@@ -32,7 +38,8 @@ export interface ActionViewProps {
 
 export interface ActionEditorProps extends ActionViewProps {
   updateCall?: (updatedCall: DecodedCall) => void;
-  onSubmit: (decodedCall: DecodedCall) => void;
+  onSubmit: (decodedCall: DecodedCall[]) => void;
+  isEdit?: boolean;
 }
 
 type SupportedActionViews = {
@@ -42,7 +49,6 @@ type SupportedActionViews = {
 
 type SupportedActionEditors = {
   editor: React.FC<ActionEditorProps>;
-  displaySubmit?: boolean;
 };
 
 export const supportedActions: Record<
@@ -50,49 +56,55 @@ export const supportedActions: Record<
   SupportedActionViews & SupportedActionEditors & SupportedActionMetadata
 > = {
   [SupportedAction.NATIVE_TRANSFER]: {
-    title: 'Transfers & Mint',
+    title: 'Transfer',
     infoLineView: ERC20TransferInfoLine,
     summaryView: Summary,
     editor: ERC20TransferEditor,
-    displaySubmit: false,
   },
   [SupportedAction.ERC20_TRANSFER]: {
-    title: 'Transfers & Mint',
+    title: 'Transfer',
     infoLineView: ERC20TransferInfoLine,
     summaryView: Summary,
     editor: ERC20TransferEditor,
-    displaySubmit: false,
   },
   [SupportedAction.REP_MINT]: {
     title: 'Mint Reputation',
     infoLineView: RepMintInfoLine,
     summaryView: Summary,
     editor: RepMintEditor,
-    displaySubmit: false,
   },
   [SupportedAction.GENERIC_CALL]: {
     title: 'Generic Call',
     infoLineView: GenericCallInfoLine,
     summaryView: Summary,
     editor: () => <div>Generic Call Editor</div>,
-    displaySubmit: false,
   },
   [SupportedAction.SET_PERMISSIONS]: {
     title: 'Set permissions',
     infoLineView: SetPermissionsInfoLine,
     summaryView: Summary,
     editor: SetPermissionsEditor,
-    displaySubmit: false,
   },
   [SupportedAction.ENS_UPDATE_CONTENT]: {
     title: 'Update ENS content',
     infoLineView: UpdateENSContentInfoLine,
     summaryView: UpdateENSContentSummary,
     editor: UpdateENSContentEditor,
-    displaySubmit: true,
+  },
+  [SupportedAction.RAW_TRANSACTION]: {
+    title: 'Raw Transaction',
+    infoLineView: RawTransactionInfoLine,
+    editor: RawTransactionEditor,
+  },
+  [SupportedAction.SET_GUILD_CONFIG]: {
+    title: 'Set Guild Config',
+    infoLineView: SetGuildConfigInfoLine,
+    summaryView: Summary,
+    editor: SetGuildConfigEditor,
   },
 };
 const ERC20Contract = new utils.Interface(ERC20.abi);
+const BaseERC20GuildContract = new utils.Interface(BaseERC20Guild.abi);
 const ERC20SnapshotRepContract = new utils.Interface(ERC20SnapshotRep.abi);
 const ENSPublicResolverContract = new utils.Interface(ENSPublicResolver.abi);
 const PermissionRegistryContract = new utils.Interface(PermissionRegistry.abi);
@@ -106,7 +118,7 @@ export const defaultValues: Record<SupportedAction, DecodedAction> = {
       callType: SupportedAction.NATIVE_TRANSFER,
       function: null,
       to: '',
-      value: BigNumber.from(0),
+      value: '',
       args: null,
     },
   },
@@ -121,7 +133,7 @@ export const defaultValues: Record<SupportedAction, DecodedAction> = {
       value: BigNumber.from(0),
       args: {
         _to: '',
-        _value: BigNumber.from(0),
+        _value: '',
       },
     },
   },
@@ -136,7 +148,7 @@ export const defaultValues: Record<SupportedAction, DecodedAction> = {
       value: BigNumber.from(0),
       args: {
         to: '',
-        amount: BigNumber.from(0),
+        amount: '',
       },
     },
   },
@@ -149,7 +161,7 @@ export const defaultValues: Record<SupportedAction, DecodedAction> = {
       function: null,
       to: '',
       args: {},
-      value: BigNumber.from(0),
+      value: '',
     },
   },
   [SupportedAction.SET_PERMISSIONS]: {
@@ -164,7 +176,7 @@ export const defaultValues: Record<SupportedAction, DecodedAction> = {
       args: {
         to: '',
         functionSignature: '',
-        valueAllowed: BigNumber.from(0),
+        valueAllowed: '',
         allowed: true,
       },
       optionalProps: {
@@ -193,6 +205,45 @@ export const defaultValues: Record<SupportedAction, DecodedAction> = {
       },
     },
   },
+  [SupportedAction.RAW_TRANSACTION]: {
+    id: '',
+    contract: null,
+    decodedCall: {
+      from: '',
+      callType: SupportedAction.RAW_TRANSACTION,
+      function: null,
+      to: '',
+      args: {},
+      value: BigNumber.from(0),
+      optionalProps: {
+        data: '',
+      },
+    },
+  },
+  [SupportedAction.SET_GUILD_CONFIG]: {
+    id: '',
+    contract: BaseERC20GuildContract,
+    decodedCall: {
+      from: '',
+      callType: SupportedAction.SET_GUILD_CONFIG,
+      function: BaseERC20GuildContract.getFunction('setConfig'),
+      to: '',
+      value: BigNumber.from(0),
+      args: {
+        _proposalTime: '',
+        _timeForExecution: '',
+        _votingPowerPercentageForProposalExecution: '',
+        _votingPowerPercentageForProposalCreation: '',
+        _voteGas: '',
+        _maxGasPrice: '',
+        _maxActiveProposals: '',
+        _lockTime: '',
+        _minimumMembersForProposalCreation: '',
+        _minimumTokensLockedForProposalCreation: '',
+      },
+      optionalProps: {},
+    },
+  },
 };
 
 export const getInfoLineView = (actionType: SupportedAction) => {
@@ -211,12 +262,6 @@ export const getEditor = (actionType: SupportedAction) => {
   if (actionType == null) return null;
 
   return supportedActions[actionType].editor;
-};
-
-export const displaySubmit = (actionType: SupportedAction) => {
-  if (actionType == null) return null;
-
-  return supportedActions[actionType].displaySubmit;
 };
 
 const isApprovalCall = (action: DecodedAction) => {

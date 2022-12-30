@@ -1,7 +1,6 @@
-// 
+//
 // File name: Guilds.spec.ts
-// Executing guide: 
-
+// Executing guide:
 
 /// <reference types="cypress" />
 import Guilds from '../../support/pageObjects/Guilds';
@@ -46,7 +45,7 @@ describe('Guilds', () => {
     });
   });
 
-  describe('Lock tokens', () => {
+  describe.skip('Lock tokens', () => {
     const testAcccount = ACCOUNTS[3];
     before(() => {
       cy.disconnectMetamaskWalletFromAllDapps();
@@ -129,4 +128,3 @@ describe('Guilds', () => {
     /// verify that proposal is created
   });
 });
-

@@ -42,7 +42,6 @@ export const WalletModal: React.FC<WalletModalProps> = ({
       .map(connector => {
         return (
           <Option
-            dataTestId={`wallet-option-${connector.id}`}
             disabled={!connector.ready}
             key={connector.id}
             onClick={() =>
@@ -58,7 +57,7 @@ export const WalletModal: React.FC<WalletModalProps> = ({
   }
 
   function getModalContent() {
-    if (isConnected && chain.unsupported) {
+    if (isConnected && chain?.unsupported) {
       return <Container>{t('pleaseSwitchNetwork')}</Container>;
     }
 
@@ -112,7 +111,7 @@ export const WalletModal: React.FC<WalletModalProps> = ({
   }
 
   const getHeader = () => {
-    if (isConnected && chain.unsupported) {
+    if (isConnected && chain?.unsupported) {
       return t('unsupportedNetwork');
     }
 
@@ -135,7 +134,7 @@ export const WalletModal: React.FC<WalletModalProps> = ({
     if (isConnected && isWalletListActive && !isReadOnly(activeConnector))
       return () => disconnect();
 
-    if (isConnected && chain.unsupported && switchNetwork) {
+    if (isConnected && chain?.unsupported && switchNetwork) {
       const firstSupported = chains && chains?.length > 0 ? chains[0] : null;
       return () => switchNetwork(firstSupported.id);
     }
@@ -147,7 +146,7 @@ export const WalletModal: React.FC<WalletModalProps> = ({
     if (isConnected && isWalletListActive && !isReadOnly(activeConnector))
       return t('disconnect');
 
-    if (isConnected && chain.unsupported) {
+    if (isConnected && chain?.unsupported) {
       const firstSupported = chains && chains?.length > 0 ? chains[0] : null;
 
       return t('switchNetworkTo', { chainName: firstSupported?.name });
